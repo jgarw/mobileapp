@@ -40,19 +40,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<FlightItem> _items = [];
   late FlightDAO myDAO;
-  late TextEditingController _departureCityController;
-  late TextEditingController _arrivalCityController;
-  late TextEditingController _departureTimeController;
-  late TextEditingController _arrivalTimeController;
   FlightItem? _selectedItem;
 
   @override
   void initState() {
     super.initState();
-    _departureCityController = TextEditingController();
-    _arrivalCityController = TextEditingController();
-    _departureTimeController = TextEditingController();
-    _arrivalTimeController = TextEditingController();
 
     $FloorFlightsDatabase
         .databaseBuilder('app_database.db')
@@ -62,36 +54,24 @@ class _MyHomePageState extends State<MyHomePage> {
       myDAO.getAllItems().then((listOfItems) {
         setState(() {
           _items.addAll(listOfItems);
+          _refreshItems();
         });
+      });
+    });
+  }
+
+  void _refreshItems() {
+    myDAO.getAllItems().then((listOfItems) {
+      setState(() {
+        _items.clear();
+        _items.addAll(listOfItems);
       });
     });
   }
 
   @override
   void dispose() {
-    _departureCityController.dispose();
-    _arrivalCityController.dispose();
-    _departureTimeController.dispose();
-    _arrivalTimeController.dispose();
     super.dispose();
-  }
-
-  void _addItem() {
-    var newItem = FlightItem(
-        FlightItem.ID + _items.length,
-        _departureCityController.text,
-        _arrivalCityController.text,
-        _departureTimeController.text,
-        _arrivalTimeController.text);
-    myDAO.insertItem(newItem).then((_) {
-      setState(() {
-        _items.add(newItem);
-        _departureCityController.text = "";
-        _arrivalCityController.text = "";
-        _departureTimeController.text = "";
-        _arrivalTimeController.text = "";
-      });
-    });
   }
 
   void _deleteItem(FlightItem item) {
@@ -152,8 +132,8 @@ class _MyHomePageState extends State<MyHomePage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-            "Fight Information: Departure City: ${item.departureCity} \nDestination City: ${item.destinationCity} \nDeparture Time: ${item.departureTime} \nArrival Time: ${item.arrivalTime} ",
-            style: TextStyle(fontSize: 24)),
+            "Fight Information: \nDeparture City: ${item.departureCity} \nDestination City: ${item.destinationCity} \nDeparture Time: ${item.departureTime} \nArrival Time: ${item.arrivalTime} ",
+            style: TextStyle(fontSize: 20)),
         Text('Database ID: ${item.id}', style: TextStyle(fontSize: 14)),
         SizedBox(height: 20),
         Padding(
@@ -206,7 +186,8 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => AddFlightPage(myDAO: myDAO)),
+                builder: (context) =>
+                    AddFlightPage(myDAO: myDAO, onAdd: _refreshItems)),
           );
         },
         child: Icon(Icons.add),
@@ -217,8 +198,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class AddFlightPage extends StatefulWidget {
   final FlightDAO myDAO;
+  final Function onAdd;
 
-  AddFlightPage({required this.myDAO});
+  AddFlightPage({required this.myDAO, required this.onAdd});
 
   @override
   _AddFlightPageState createState() => _AddFlightPageState();
@@ -250,12 +232,13 @@ class _AddFlightPageState extends State<AddFlightPage> {
 
   void _addItem() {
     var newItem = FlightItem(
-        FlightItem.ID + DateTime.now().millisecondsSinceEpoch,
+        FlightItem.ID + 1,
         _departureCityController.text,
         _arrivalCityController.text,
         _departureTimeController.text,
         _arrivalTimeController.text);
     widget.myDAO.insertItem(newItem).then((_) {
+      widget.onAdd();
       Navigator.pop(context);
     });
   }

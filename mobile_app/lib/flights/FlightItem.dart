@@ -4,7 +4,7 @@ import 'package:floor/floor.dart';
 class FlightItem {
   static int ID = 1;
 
-  @primaryKey
+  @PrimaryKey(autoGenerate: true)
   final int id;
   final String departureCity;
   final String destinationCity;
