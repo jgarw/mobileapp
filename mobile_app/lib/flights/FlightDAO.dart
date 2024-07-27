@@ -1,4 +1,6 @@
+
 import 'package:floor/floor.dart';
+
 import 'FlightItem.dart';
 
 @dao
@@ -11,4 +13,8 @@ abstract class FlightDAO {
 
   @delete
   Future<void> deleteItem(FlightItem flight);
+
+  @update
+  Future<void> updateItem(FlightItem flight);
+
 }

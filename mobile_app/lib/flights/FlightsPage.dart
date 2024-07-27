@@ -1,15 +1,14 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:flutter/services.dart';
+import 'package:mobile_app/flights/AddFlightPage.dart';
 import 'package:mobile_app/flights/FlightsDatabase.dart';
+import 'package:mobile_app/flights/UpdateFlightPage.dart';
 
 import 'FlightDAO.dart';
 import 'FlightsDatabase.dart';
 import 'package:flutter/material.dart';
 import 'FlightItem.dart';
-import 'AddFlightPage.dart';
-
-void main() {
-  runApp(const MyApp());
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -23,21 +22,21 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flights'),
+      home: const FlightsPage(title: 'Flights'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class FlightsPage extends StatefulWidget {
+  const FlightsPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<FlightsPage> createState() => _FlightsPage();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _FlightsPage extends State<FlightsPage> {
   final List<FlightItem> _items = [];
   late FlightDAO myDAO;
   FlightItem? _selectedItem;
@@ -108,23 +107,44 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _itemList() {
+    
+
     return ListView.builder(
       itemCount: _items.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text("Departure: " +
-              _items[index].departureCity +
-              " -> Arrival: " +
-              _items[index].destinationCity +
-              "\n" +
-              "Departure Time: " +
-              _items[index].departureTime +
-              " -> Arrival Time: " +
-              _items[index].arrivalTime),
-          onTap: () => _onItemTapped(_items[index]),
-        );
-      },
-    );
+         return ListTile(
+        title: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "Departure: ${_items[index].departureCity} ",
+                style: TextStyle(fontSize: 20, color: Colors.black)
+              ),
+              WidgetSpan(
+                child: Icon(Icons.flight_takeoff, size: 20),
+              ),
+              TextSpan(
+                text: " Arrival: ${_items[index].destinationCity}\n",
+               style: TextStyle(fontSize: 20, color: Colors.black)
+              ),
+              TextSpan(
+                text: "Departure Time: ${_items[index].departureTime}",
+                style: TextStyle(fontSize: 20, color: Colors.black)
+              ),
+              WidgetSpan(
+                child: Icon(Icons.arrow_right_alt, size: 20),
+              ),
+              TextSpan(
+                text: "Arrival Time: ${_items[index].arrivalTime}",
+                style: TextStyle(fontSize: 20, color: Colors.black)
+              ),
+            ],
+          ),
+        ),
+        onTap: () => _onItemTapped(_items[index]),
+      );
+    },
+  );
   }
 
   Widget _detailsPage(FlightItem item) {
@@ -150,6 +170,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: () => _deleteItem(item),
                 child: Text('Delete'),
+              ),
+              SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    UpdateFlightPage(myDAO: myDAO, onUpdate: _refreshItems, flight: item,)),
+          );
+        },
+                child: Text('Update'),
               ),
             ],
           ),
@@ -196,106 +228,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class AddFlightPage extends StatefulWidget {
-  final FlightDAO myDAO;
-  final Function onAdd;
-
-  AddFlightPage({required this.myDAO, required this.onAdd});
-
-  @override
-  _AddFlightPageState createState() => _AddFlightPageState();
-}
-
-class _AddFlightPageState extends State<AddFlightPage> {
-  late TextEditingController _departureCityController;
-  late TextEditingController _arrivalCityController;
-  late TextEditingController _departureTimeController;
-  late TextEditingController _arrivalTimeController;
-
-  @override
-  void initState() {
-    super.initState();
-    _departureCityController = TextEditingController();
-    _arrivalCityController = TextEditingController();
-    _departureTimeController = TextEditingController();
-    _arrivalTimeController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _departureCityController.dispose();
-    _arrivalCityController.dispose();
-    _departureTimeController.dispose();
-    _arrivalTimeController.dispose();
-    super.dispose();
-  }
-
-  void _addItem() {
-    var newItem = FlightItem(
-        FlightItem.ID + 1,
-        _departureCityController.text,
-        _arrivalCityController.text,
-        _departureTimeController.text,
-        _arrivalTimeController.text);
-    widget.myDAO.insertItem(newItem).then((_) {
-      widget.onAdd();
-      Navigator.pop(context);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Flight'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _departureCityController,
-              decoration: InputDecoration(
-                hintText: "Type here",
-                border: OutlineInputBorder(),
-                labelText: "Enter a Departure City:",
-              ),
-            ),
-            SizedBox(height: 8),
-            TextField(
-              controller: _arrivalCityController,
-              decoration: InputDecoration(
-                hintText: "Type here",
-                border: OutlineInputBorder(),
-                labelText: "Enter an Arrival City:",
-              ),
-            ),
-            SizedBox(height: 8),
-            TextField(
-              controller: _departureTimeController,
-              decoration: InputDecoration(
-                hintText: "Type here",
-                border: OutlineInputBorder(),
-                labelText: "Enter a Departure Time:",
-              ),
-            ),
-            SizedBox(height: 8),
-            TextField(
-              controller: _arrivalTimeController,
-              decoration: InputDecoration(
-                hintText: "Type here",
-                border: OutlineInputBorder(),
-                labelText: "Enter an Arrival Time:",
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _addItem,
-              child: Text('Add Flight'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

@@ -1,20 +1,20 @@
+import "package:flutter/material.dart";
+import "package:mobile_app/flights/FlightDAO.dart";
+import "package:mobile_app/flights/FlightItem.dart";
 
-import 'package:flutter/material.dart';
-import 'package:mobile_app/flights/FlightDAO.dart';
-import 'package:mobile_app/flights/FlightItem.dart';
+class UpdateFlightPage extends StatefulWidget{
 
-/// create a second page that will hold textfields for user to enter flight data
-class AddFlightPage extends StatefulWidget {
-  final FlightDAO myDAO;
-  final Function onAdd;
+   final FlightDAO myDAO;
+   final Function onUpdate;
+   final FlightItem flight;
 
-  AddFlightPage({required this.myDAO, required this.onAdd});
+  UpdateFlightPage({required this.myDAO, required this.onUpdate, required this.flight});
 
   @override
-  _AddFlightPageState createState() => _AddFlightPageState();
+  _UpdateFlightPageState createState() => _UpdateFlightPageState();
 }
 
-class _AddFlightPageState extends State<AddFlightPage> {
+class _UpdateFlightPageState extends State<UpdateFlightPage> {
   late TextEditingController _departureCityController;
   late TextEditingController _arrivalCityController;
   late TextEditingController _departureTimeController;
@@ -23,10 +23,10 @@ class _AddFlightPageState extends State<AddFlightPage> {
   @override
   void initState() {
     super.initState();
-    _departureCityController = TextEditingController();
-    _arrivalCityController = TextEditingController();
-    _departureTimeController = TextEditingController();
-    _arrivalTimeController = TextEditingController();
+    _departureCityController = TextEditingController(text: widget.flight.departureCity);
+    _arrivalCityController = TextEditingController(text: widget.flight.destinationCity);
+    _departureTimeController = TextEditingController(text: widget.flight.departureTime);
+    _arrivalTimeController = TextEditingController(text: widget.flight.arrivalTime);
   }
 
   @override
@@ -38,24 +38,29 @@ class _AddFlightPageState extends State<AddFlightPage> {
     super.dispose();
   }
 
-  void _addItem() {
-    var newItem = FlightItem(
-        FlightItem.ID + 1,
-        _departureCityController.text,
-        _arrivalCityController.text,
-        _departureTimeController.text,
-        _arrivalTimeController.text);
-    widget.myDAO.insertItem(newItem).then((_) {
-      widget.onAdd();
+///method to update item selected
+  void _updateItem(){
+
+    var updatedItem = FlightItem(
+      FlightItem.ID,
+      _departureCityController.text,
+      _arrivalCityController.text,
+      _departureTimeController.text,
+      _arrivalTimeController.text
+    );
+
+    widget.myDAO.updateItem(updatedItem).then((_){
+      widget.onUpdate();
       Navigator.pop(context);
     });
-  }
 
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Flight'),
+        title: Text('Update Flight'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -98,8 +103,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _addItem,
-              child: Text('Add Flight'),
+              onPressed: _updateItem,
+              child: Text('Update Flight'),
             ),
           ],
         ),
