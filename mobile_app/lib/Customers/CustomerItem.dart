@@ -1,37 +1,51 @@
 import 'package:floor/floor.dart';
+import 'CustomerDAO.dart';
+import 'CustomerDatabase.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
+import 'package:floor/floor.dart';
 
+@entity
 class Customer {
-  final int id;
+  @primaryKey
+  final int? id;
   final String firstName;
   final String lastName;
   final String address;
-  final DateTime birthday;
+  final String birthday; // Store as String
 
   Customer({
     required this.id,
     required this.firstName,
     required this.lastName,
     required this.address,
-    required this.birthday,
+    required this.birthday, // Pass as String
   });
 
+  // Convert String to DateTime
+  DateTime get birthdayDateTime => DateTime.parse(birthday);
+
+  // Convert DateTime to String
+  String get birthdayString => birthdayDateTime.toIso8601String();
+
+  // Convert the Customer object to a map
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'firstName': firstName,
       'lastName': lastName,
       'address': address,
-      'birthday': birthday.toIso8601String(),
+      'birthday': birthdayString,
     };
   }
 
+  // Create a Customer object from a map
   factory Customer.fromMap(Map<String, dynamic> map) {
     return Customer(
       id: map['id'],
       firstName: map['firstName'],
       lastName: map['lastName'],
       address: map['address'],
-      birthday: DateTime.parse(map['birthday']),
+      birthday: map['birthday'], // Assume it's a String
     );
   }
 }

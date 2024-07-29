@@ -1,7 +1,6 @@
 import 'package:floor/floor.dart';
-import 'CustomerDatabase.dart';
 import 'CustomerItem.dart';
-
+import 'package:sqflite/sqflite.dart' as sqflite;
 
 @dao
 abstract class CustomerDAO {

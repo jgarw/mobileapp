@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:floor/floor.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
 import 'CustomerItem.dart';
 import 'CustomerDAO.dart';
 import 'CustomerDatabase.dart';
 import 'AddCustomer.dart';
 import 'UpdateCustomer.dart';
 
-class CustomerPage extends StatefulWidget {
+class CustomersPage extends StatefulWidget {
+  const CustomersPage({super.key});
+
   @override
-  _CustomerPageState createState() => _CustomerPageState();
+  _CustomersPageState createState() => _CustomersPageState();
 }
 
-class _CustomerPageState extends State<CustomerPage> {
-  late AppDatabase _database;
+class _CustomersPageState extends State<CustomersPage> {
+  late CustomerDatabase _database;
   late CustomerDAO _dao;
-  late Future<List<Customer>> _customers;
+  late Future<List<Customer>> _customers = Future.value([]);
 
   @override
   void initState() {
@@ -23,16 +26,18 @@ class _CustomerPageState extends State<CustomerPage> {
   }
 
   void _initDatabase() async {
-    _database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    _database = await $FloorCustomerDatabase.databaseBuilder('app_database.db').build();
     _dao = _database.customerDao;
     _customers = _dao.findAllCustomers();
-    setState(() {});
+    if (mounted){
+      setState(() {});
+    }
   }
 
   void _navigateToAddCustomer() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddCustomer()),
+      MaterialPageRoute(builder: (context) => const AddCustomer()),
     );
     if (result != null) {
       setState(() {
@@ -45,13 +50,13 @@ class _CustomerPageState extends State<CustomerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Customer Management'),
+        title: const Text('Customer Management'),
       ),
       body: FutureBuilder<List<Customer>>(
         future: _customers,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -59,7 +64,7 @@ class _CustomerPageState extends State<CustomerPage> {
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No customers found.'));
+            return const Center(child: Text('No customers found.'));
           }
 
           return ListView.builder(
@@ -89,7 +94,7 @@ class _CustomerPageState extends State<CustomerPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddCustomer,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

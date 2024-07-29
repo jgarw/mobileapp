@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Customers/CustomerDatabase.dart';
 import 'CustomerItem.dart';
 import 'CustomerDAO.dart';
-import 'CustomerDatabase.dart';
+import 'CustomersPage.dart';
+import 'package:floor/floor.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
+import 'package:path/path.dart';
 
 class UpdateCustomer extends StatefulWidget {
   final Customer customer;
 
-  UpdateCustomer({required this.customer});
+  const UpdateCustomer({super.key, required this.customer});
 
   @override
   _UpdateCustomerState createState() => _UpdateCustomerState();
@@ -23,14 +27,16 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
   void initState() {
     super.initState();
     _initDatabase();
-    _firstNameController = TextEditingController(text: widget.customer.firstName);
+    _firstNameController =
+        TextEditingController(text: widget.customer.firstName);
     _lastNameController = TextEditingController(text: widget.customer.lastName);
     _addressController = TextEditingController(text: widget.customer.address);
     _birthdayController = TextEditingController(text: widget.customer.birthday);
   }
 
   void _initDatabase() async {
-    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    final database = await $FloorCustomerDatabase.databaseBuilder('app_database.db')
+        .build();
     _dao = database.customerDao;
   }
 
@@ -44,56 +50,57 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
     );
 
     await _dao.updateCustomer(updatedCustomer);
-    Navigator.pop(context, true);
+    Navigator.pop(context as BuildContext, true);
   }
 
   void _deleteCustomer() async {
     await _dao.deleteCustomer(widget.customer);
-    Navigator.pop(context, true);
+    Navigator.pop(context as BuildContext, true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Update Customer'),
+      appBar: AppBar(
+        title: const Text('Update Customer'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: <Widget>[
+            TextField(
+              controller: _firstNameController,
+              decoration: const InputDecoration(labelText: 'First Name'),
+            ),
+            TextField(
+              controller: _lastNameController,
+              decoration: const InputDecoration(labelText: 'Last Name'),
+            ),
+            TextField(
+              controller: _addressController,
+              decoration: const InputDecoration(labelText: 'Address'),
+            ),
+            TextField(
+              controller: _birthdayController,
+              decoration: const InputDecoration(
+                  labelText: 'Birthday (YYYY-MM-DD)'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: _updateCustomer,
+                  child: Text('Update'),
+                ),
+                ElevatedButton(
+                  onPressed: _deleteCustomer,
+                  child: Text('Delete'),
+                ),
+              ],
+            ),
+          ],
         ),
-        body: Padding(
-        padding: EdgeInsets.all(16.0),
-    child: Column(
-    children: <Widget>[
-    TextField(
-    controller: _firstNameController,
-    decoration: InputDecoration(labelText: 'First Name'),
-    ),
-    TextField(
-    controller: _lastNameController,
-    decoration: InputDecoration(labelText: 'Last Name'),
-  },
-  TextField(
-  controller: _addressController,
-  decoration: InputDecoration(labelText: 'Address'),
-},
-TextField(
-controller: _birthdayController,
-decoration: InputDecoration(labelText: 'Birthday (YYYY-MM-DD)'),
-},
-Row(
-mainAxisAlignment: MainAxisAlignment.spaceBetween,
-children: <Widget>[
-ElevatedButton(
-onPressed: _updateCustomer,
-child: Text('Update'),
-},
-ElevatedButton(
-onPressed: _deleteCustomer,
-child: Text('Delete'),
-},
-],
-),
-],
-),
-),
-);
-}
+      ),
+    );
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'flights/FlightsPage.dart'; 
+import 'Customers/CustomersPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,7 +47,16 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: 10),
-            const ElevatedButton(onPressed: null, child: Text("Customers Page"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) => CustomersPage(),
+                ),
+                );
+                },
+              child: Text("Customers Page"),
             ),
             SizedBox(height: 10),
             const ElevatedButton(onPressed: null, child: Text("Airplanes Page"),
