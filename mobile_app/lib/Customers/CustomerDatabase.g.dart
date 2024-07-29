@@ -162,7 +162,7 @@ class _$CustomerDAO extends CustomerDAO {
 
   @override
   Future<List<Customer>> findAllCustomers() async {
-    return _queryAdapter.queryList('SELECT * FROM customers',
+    return _queryAdapter.queryList('SELECT * FROM Customer',
         mapper: (Map<String, Object?> row) => Customer(
             id: row['id'] as int?,
             firstName: row['firstName'] as String,

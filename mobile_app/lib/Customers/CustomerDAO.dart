@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart' as sqflite;
 
 @dao
 abstract class CustomerDAO {
-  @Query('SELECT * FROM customers')
+  @Query('SELECT * FROM Customer')
   Future<List<Customer>> findAllCustomers();
 
   @insert
