@@ -42,12 +42,12 @@ class _AddCustomerState extends State<AddCustomer> {
       return;
     }
 
-    if (_dao == null) {
+   /* if (_dao == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Database not initialized')),
       );
       return;
-    }
+    }*/
 
     final customer = Customer(
       id: null,

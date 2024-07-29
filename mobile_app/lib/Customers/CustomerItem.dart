@@ -4,9 +4,9 @@ import 'CustomerDatabase.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:floor/floor.dart';
 
-@entity
+@Entity(tableName: 'Customer')
 class Customer {
-  @primaryKey
+  @PrimaryKey(autoGenerate: true)
   final int? id;
   final String firstName;
   final String lastName;
