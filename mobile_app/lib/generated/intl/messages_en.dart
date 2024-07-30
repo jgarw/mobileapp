@@ -33,6 +33,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "reservationsPage":
             MessageLookupByLibrary.simpleMessage("Reservations Page"),
         "save": MessageLookupByLibrary.simpleMessage("save"),
+        "switchToEnglish":
+            MessageLookupByLibrary.simpleMessage("अंग्रेजी में स्विच करें"),
+        "switchToHindi":
+            MessageLookupByLibrary.simpleMessage("हिंदी में स्विच करें"),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome")
       };

@@ -149,6 +149,26 @@ class S {
       args: [],
     );
   }
+
+  /// `हिंदी में स्विच करें`
+  String get switchToHindi {
+    return Intl.message(
+      'हिंदी में स्विच करें',
+      name: 'switchToHindi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `अंग्रेजी में स्विच करें`
+  String get switchToEnglish {
+    return Intl.message(
+      'अंग्रेजी में स्विच करें',
+      name: 'switchToEnglish',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

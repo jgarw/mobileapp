@@ -8,5 +8,7 @@
   "update": "अपडेट",
   "delete": "हटाएँ",
   "save": "सहेजें",
-  "confirmDeletion": "क्या आप वाकई इसे हटाना चाहते हैं?"
+  "confirmDeletion": "क्या आप वाकई इसे हटाना चाहते हैं?",
+  "switchToHindi": "Switch to Hindi",
+  "switchToEnglish": "Switch to English"
 }
