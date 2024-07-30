@@ -27,20 +27,33 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
   void initState() {
     super.initState();
     _initDatabase();
-    _firstNameController =
-        TextEditingController(text: widget.customer.firstName);
+    _firstNameController = TextEditingController(text: widget.customer.firstName);
     _lastNameController = TextEditingController(text: widget.customer.lastName);
     _addressController = TextEditingController(text: widget.customer.address);
     _birthdayController = TextEditingController(text: widget.customer.birthday);
   }
 
-  void _initDatabase() async {
-    final database = await $FloorCustomerDatabase.databaseBuilder('app_database.db')
-        .build();
-    _dao = database.customerDao;
+
+  Future<void> _initDatabase() async {
+    try {
+      final database = await $FloorCustomerDatabase.databaseBuilder(
+          'customer_database.db').build();
+      _dao = database.customerDao;
+    } catch (e) {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        SnackBar(content: Text('Database initialization error: $e')),
+      );
+    }
   }
 
-  void _updateCustomer() async {
+
+  Future<void> _updateCustomer() async {
+    if (_dao == null) {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        const SnackBar(content: Text('Database not initialized')),
+      );
+      return;
+    }
     final updatedCustomer = Customer(
       id: widget.customer.id,
       firstName: _firstNameController.text,
@@ -49,14 +62,40 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
       birthday: _birthdayController.text,
     );
 
-    await _dao.updateCustomer(updatedCustomer);
-    Navigator.pop(context as BuildContext, true);
-  }
+    try {
+      await _dao.updateCustomer(updatedCustomer);
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        const SnackBar(content: Text('Customer updated')),
+      );
+      Navigator.pop(context as BuildContext, true);
+    } catch (e) {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        SnackBar(content: Text('Error updating customer: $e')),
+      );
+    }
+    }
 
-  void _deleteCustomer() async {
-    await _dao.deleteCustomer(widget.customer);
-    Navigator.pop(context as BuildContext, true);
-  }
+  Future<void> _deleteCustomer() async {
+    // Ensure that the database is initialized
+    if (_dao == null) {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        const SnackBar(content: Text('Database not initialized')),
+      );
+      return;
+    }
+
+    try {
+      await _dao.deleteCustomer(widget.customer);
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        const SnackBar(content: Text('Customer deleted')),
+      );
+      Navigator.pop(context as BuildContext, true);
+    } catch (e) {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        SnackBar(content: Text('Error deleting customer: $e')),
+      );
+    }
+    }
 
   @override
   Widget build(BuildContext context) {

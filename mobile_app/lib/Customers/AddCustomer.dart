@@ -1,3 +1,4 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'CustomerItem.dart';
@@ -19,17 +20,40 @@ class _AddCustomerState extends State<AddCustomer> {
   final _addressController = TextEditingController();
   final _birthdayController = TextEditingController();
   CustomerDAO? _dao;
+  final _encryptedPrefs = EncryptedSharedPreferences();
+
+  void _initDatabase() async {
+    final database = await $FloorCustomerDatabase.databaseBuilder('customer_database.db').build();
+    _dao = database.customerDao;
+  }
 
   @override
   void initState() {
     super.initState();
     _initDatabase();
+    _loadSavedCustomer();
   }
 
-  void _initDatabase() async {
-    final database = await $FloorCustomerDatabase.databaseBuilder('app_database.db').build();
-    _dao = database.customerDao;
+  Future<void> _loadSavedCustomer() async {
+    final savedFirstName = await _encryptedPrefs.getString('firstName');
+    final savedLastName = await _encryptedPrefs.getString('lastName');
+    final savedAddress = await _encryptedPrefs.getString('address');
+    final savedBirthday = await _encryptedPrefs.getString('birthday');
+
+    if (savedFirstName != null) {
+      _firstNameController.text = savedFirstName;
+    }
+    if (savedLastName != null) {
+      _lastNameController.text = savedLastName;
+    }
+    if (savedAddress != null) {
+      _addressController.text = savedAddress;
+    }
+    if (savedBirthday != null) {
+      _birthdayController.text = savedBirthday;
+    }
   }
+
 
   void _saveCustomer() async {
     if (_firstNameController.text.isEmpty ||
@@ -42,12 +66,12 @@ class _AddCustomerState extends State<AddCustomer> {
       return;
     }
 
-   /* if (_dao == null) {
+    if (_dao == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Database not initialized')),
       );
       return;
-    }*/
+    }
 
     final customer = Customer(
       id: null,
@@ -95,19 +119,20 @@ class _AddCustomerState extends State<AddCustomer> {
     //await _dao.insertCustomer(customer);
 
     if (saveForNextTime ?? false) {
-      // Save customer details using SharedPreferences
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('firstName', customer.firstName);
-      await prefs.setString('lastName', customer.lastName);
-      await prefs.setString('address', customer.address);
-      await prefs.setString('birthday', customer.birthday);
+      // Save customer details using EncryptedSharedPreferences
+      await _encryptedPrefs.setString('firstName', customer.firstName);
+      await _encryptedPrefs.setString('lastName', customer.lastName);
+      await _encryptedPrefs.setString('address', customer.address);
+      await _encryptedPrefs.setString('birthday', customer.birthday);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Customer details saved for next time')),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Customer added')),
-      );
+      // Clear saved customer details
+      await _encryptedPrefs.remove('firstName');
+      await _encryptedPrefs.remove('lastName');
+      await _encryptedPrefs.remove('address');
+      await _encryptedPrefs.remove('birthday');
     }
 
     Navigator.pop(context, true);

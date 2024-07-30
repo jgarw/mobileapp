@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:floor/floor.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'CustomerItem.dart';
 import 'CustomerDAO.dart';
 import 'CustomerDatabase.dart';
 import 'AddCustomer.dart';
 import 'UpdateCustomer.dart';
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 
 class CustomersPage extends StatefulWidget {
   const CustomersPage({super.key});
@@ -18,6 +20,7 @@ class _CustomersPageState extends State<CustomersPage> {
   late CustomerDatabase _database;
   late CustomerDAO _dao;
   late Future<List<Customer>> _customers = Future.value([]);
+  final _storage = FlutterSecureStorage();
 
   @override
   void initState() {
@@ -26,13 +29,22 @@ class _CustomersPageState extends State<CustomersPage> {
   }
 
   void _initDatabase() async {
-    _database = await $FloorCustomerDatabase.databaseBuilder('app_database.db').build();
-    _dao = _database.customerDao;
-    _customers = _dao.findAllCustomers();
-    if (mounted){
-      setState(() {});
+    try {
+      final database = await $FloorCustomerDatabase.databaseBuilder('customer_database.db').build();
+      _dao = database.customerDao;
+      _loadCustomers();
+    } catch (e) {
+      // Handle the error appropriately
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Database initialization error: $e')));
     }
   }
+
+  void _loadCustomers() {
+    setState(() {
+      _customers = _dao.findAllCustomers();
+    });
+  }
+
 
   void _navigateToAddCustomer() async {
     final result = await Navigator.push(
@@ -40,10 +52,8 @@ class _CustomersPageState extends State<CustomersPage> {
       MaterialPageRoute(builder: (context) => const AddCustomer()),
     );
     if (result != null) {
-      setState(() {
-        _customers = _dao.findAllCustomers();
-      });
-    }
+      _loadCustomers();
+      };
   }
 
   @override
@@ -82,9 +92,7 @@ class _CustomersPageState extends State<CustomersPage> {
                     ),
                   );
                   if (result != null) {
-                    setState(() {
-                      _customers = _dao.findAllCustomers();
-                    });
+                    _loadCustomers();
                   }
                 },
               );
@@ -92,6 +100,7 @@ class _CustomersPageState extends State<CustomersPage> {
           );
         },
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddCustomer,
         child: const Icon(Icons.add),
@@ -99,3 +108,4 @@ class _CustomersPageState extends State<CustomersPage> {
     );
   }
 }
+
