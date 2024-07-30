@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Customers/CustomerDatabase.dart';
+import '../generated/l10n.dart';
 import 'CustomerItem.dart';
 import 'CustomerDAO.dart';
 import 'CustomersPage.dart';
@@ -133,7 +134,7 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
                 ),
                 ElevatedButton(
                   onPressed: _deleteCustomer,
-                  child: Text('Delete'),
+                  child: Text(S.of(context).delete),
                 ),
               ],
             ),

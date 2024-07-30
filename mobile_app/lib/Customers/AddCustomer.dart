@@ -1,11 +1,13 @@
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../generated/l10n.dart';
 import 'CustomerItem.dart';
 import 'CustomerDAO.dart';
 import 'CustomerDatabase.dart';
 import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AddCustomer extends StatefulWidget {
   const AddCustomer({super.key});
@@ -166,7 +168,7 @@ class _AddCustomerState extends State<AddCustomer> {
         ),
         ElevatedButton(
         onPressed: _saveCustomer,
-        child: Text('Save'),
+        child: Text(S.of(context).save),
         ),
         ],
         ),

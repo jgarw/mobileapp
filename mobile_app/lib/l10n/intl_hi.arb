@@ -1,0 +1,12 @@
+{
+  "appTitle": "CST2335 अंतिम परियोजना",
+  "customersPage": "ग्राहक पृष्ठ",
+  "flightsPage": "उड़ानों का पृष्ठ",
+  "reservationsPage": "आरक्षण पृष्ठ",
+  "hello": "नमस्ते",
+  "welcome": "आपका स्वागत है",
+  "update": "अपडेट",
+  "delete": "हटाएँ",
+  "save": "सहेजें",
+  "confirmDeletion": "क्या आप वाकई इसे हटाना चाहते हैं?"
+}

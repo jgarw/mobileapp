@@ -1,0 +1,12 @@
+{
+  "appTitle": "CST2335 Final Project",
+  "customersPage": "Customers Page",
+  "flightsPage": "Flights Page",
+  "reservationsPage": "Reservations Page",
+  "hello": "Hello",
+  "welcome": "Welcome",
+  "update": "Update",
+  "delete": "Delete",
+  "save": "save",
+  "confirmDeletion": "Are you sure you want to delete this?"
+}
