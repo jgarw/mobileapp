@@ -79,7 +79,7 @@ class _CustomersPageState extends State<CustomersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(S.of(context).customerManagement),
+        title:   Text(S.of(context).customerManagement),
       ),
       body: FutureBuilder<List<Customer>>(
         future: _customers,
