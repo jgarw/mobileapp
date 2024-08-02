@@ -22,22 +22,47 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addCustomer": MessageLookupByLibrary.simpleMessage("ग्राहक जोड़ें"),
+        "address": MessageLookupByLibrary.simpleMessage("पता"),
         "appTitle":
             MessageLookupByLibrary.simpleMessage("CST2335 अंतिम परियोजना"),
+        "birthday":
+            MessageLookupByLibrary.simpleMessage("जन्मदिन (YYYY-MM-DD)"),
         "confirmDeletion": MessageLookupByLibrary.simpleMessage(
             "क्या आप वाकई इसे हटाना चाहते हैं?"),
+        "customerAdded":
+            MessageLookupByLibrary.simpleMessage("ग्राहक जोड़ा गया"),
+        "customerDeleted":
+            MessageLookupByLibrary.simpleMessage("ग्राहक हटा दिया गया"),
+        "customerManagement":
+            MessageLookupByLibrary.simpleMessage("ग्राहक प्रबंधन"),
+        "customerUpdated":
+            MessageLookupByLibrary.simpleMessage("ग्राहक अपडेट किया गया"),
         "customersPage": MessageLookupByLibrary.simpleMessage("ग्राहक पृष्ठ"),
+        "databaseNotInitialized":
+            MessageLookupByLibrary.simpleMessage("डाटाबेस प्रारंभ नहीं हुआ"),
         "delete": MessageLookupByLibrary.simpleMessage("हटाएँ"),
+        "firstName": MessageLookupByLibrary.simpleMessage("पहला नाम"),
         "flightsPage": MessageLookupByLibrary.simpleMessage("उड़ानों का पृष्ठ"),
         "hello": MessageLookupByLibrary.simpleMessage("नमस्ते"),
+        "lastName": MessageLookupByLibrary.simpleMessage("अंतिम नाम"),
+        "no": MessageLookupByLibrary.simpleMessage("नहीं"),
+        "noCustomerFound":
+            MessageLookupByLibrary.simpleMessage("कोई ग्राहक नहीं मिला"),
+        "pleaseFillAllFields":
+            MessageLookupByLibrary.simpleMessage("कृपया सभी फ़ील्ड भरें"),
         "reservationsPage":
             MessageLookupByLibrary.simpleMessage("आरक्षण पृष्ठ"),
         "save": MessageLookupByLibrary.simpleMessage("सहेजें"),
-        "switchToEnglish":
-            MessageLookupByLibrary.simpleMessage("Switch to English"),
-        "switchToHindi":
-            MessageLookupByLibrary.simpleMessage("Switch to Hindi"),
+        "saveDetails": MessageLookupByLibrary.simpleMessage("विवरण सहेजें"),
+        "saveForNextTime": MessageLookupByLibrary.simpleMessage(
+            "क्या आप अगली बार के लिए सहेजना चाहते हैं?"),
+        "savedForNextTime": MessageLookupByLibrary.simpleMessage(
+            "ग्राहक अगली बार के लिए सहेजें"),
         "update": MessageLookupByLibrary.simpleMessage("अपडेट"),
-        "welcome": MessageLookupByLibrary.simpleMessage("आपका स्वागत है")
+        "updateCustomer":
+            MessageLookupByLibrary.simpleMessage("ग्राहक अपडेट करें"),
+        "welcome": MessageLookupByLibrary.simpleMessage("आपका स्वागत है"),
+        "yes": MessageLookupByLibrary.simpleMessage("हाँ")
       };
 }

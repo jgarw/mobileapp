@@ -8,9 +8,17 @@ import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:path/path.dart';
 
+/// A StatefulWidget that represents a screen for updating a customer's details.
+///
+/// The [UpdateCustomer] widget takes an existing [Customer] object as a parameter and
+/// allows the user to update the customer's information.
 class UpdateCustomer extends StatefulWidget {
+  /// Creates an instance of [UpdateCustomer].
+  ///
+  /// The [customer] parameter is required and represents the customer to be updated.
   final Customer customer;
 
+  /// Creates an instance of [UpdateCustomer] with the given [customer].
   const UpdateCustomer({super.key, required this.customer});
 
   @override
@@ -35,6 +43,9 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
   }
 
 
+  /// Initializes the database and sets up the DAO for database operations.
+  ///
+  /// This method builds the customer database and assigns the DAO for CRUD operations.
   Future<void> _initDatabase() async {
     try {
       final database = await $FloorCustomerDatabase.databaseBuilder(
@@ -48,10 +59,15 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
   }
 
 
+  /// Updates the customer's details in the database.
+  ///
+  /// This method creates an updated [Customer] object with the values from the text
+  /// controllers and then attempts to update the customer in the database.
+  /// If successful, it displays a success message and pops the screen.
   Future<void> _updateCustomer() async {
     if (_dao == null) {
       ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-        const SnackBar(content: Text('Database not initialized')),
+         SnackBar(content: Text(S.of(context as BuildContext).databaseNotInitialized)),
       );
       return;
     }
@@ -66,7 +82,7 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
     try {
       await _dao.updateCustomer(updatedCustomer);
       ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-        const SnackBar(content: Text('Customer updated')),
+         SnackBar(content: Text(S.of(context as BuildContext).customerUpdated)),
       );
       Navigator.pop(context as BuildContext, true);
     } catch (e) {
@@ -76,11 +92,16 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
     }
     }
 
+  /// Deletes the customer from the database.
+  ///
+  /// This method attempts to delete the customer from the database and displays a
+  /// success message if the operation is successful. If an error occurs, it displays
+  /// an error message. After successful deletion, it pops the screen.
   Future<void> _deleteCustomer() async {
     // Ensure that the database is initialized
     if (_dao == null) {
       ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-        const SnackBar(content: Text('Database not initialized')),
+         SnackBar(content: Text(S.of(context as BuildContext).databaseNotInitialized)),
       );
       return;
     }
@@ -88,7 +109,7 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
     try {
       await _dao.deleteCustomer(widget.customer);
       ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-        const SnackBar(content: Text('Customer deleted')),
+         SnackBar(content: Text(S.of(context as BuildContext).customerDeleted)),
       );
       Navigator.pop(context as BuildContext, true);
     } catch (e) {
@@ -102,7 +123,7 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Customer'),
+        title:  Text(S.of(context).updateCustomer),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -110,27 +131,27 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
           children: <Widget>[
             TextField(
               controller: _firstNameController,
-              decoration: const InputDecoration(labelText: 'First Name'),
+              decoration:  InputDecoration(labelText: S.of(context).firstName),
             ),
             TextField(
               controller: _lastNameController,
-              decoration: const InputDecoration(labelText: 'Last Name'),
+              decoration:  InputDecoration(labelText: S.of(context).lastName),
             ),
             TextField(
               controller: _addressController,
-              decoration: const InputDecoration(labelText: 'Address'),
+              decoration:  InputDecoration(labelText: S.of(context).address),
             ),
             TextField(
               controller: _birthdayController,
-              decoration: const InputDecoration(
-                  labelText: 'Birthday (YYYY-MM-DD)'),
+              decoration:  InputDecoration(
+                  labelText: S.of(context).birthday),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 ElevatedButton(
                   onPressed: _updateCustomer,
-                  child: Text('Update'),
+                  child: Text(S.of(context).update),
                 ),
                 ElevatedButton(
                   onPressed: _deleteCustomer,

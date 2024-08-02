@@ -9,7 +9,11 @@ import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+
+/// A StatefulWidget that represents a screen for adding a customer.
 class AddCustomer extends StatefulWidget {
+
+  /// Creates an instance of [AddCustomer].
   const AddCustomer({super.key});
 
   @override
@@ -24,6 +28,7 @@ class _AddCustomerState extends State<AddCustomer> {
   CustomerDAO? _dao;
   final _encryptedPrefs = EncryptedSharedPreferences();
 
+  /// Initializes the database and sets up the DAO for database operations.
   void _initDatabase() async {
     final database = await $FloorCustomerDatabase.databaseBuilder('customer_database.db').build();
     _dao = database.customerDao;
@@ -36,6 +41,7 @@ class _AddCustomerState extends State<AddCustomer> {
     _loadSavedCustomer();
   }
 
+  /// Loads saved customer details from [EncryptedSharedPreferences] and populates the text fields.
   Future<void> _loadSavedCustomer() async {
     final savedFirstName = await _encryptedPrefs.getString('firstName');
     final savedLastName = await _encryptedPrefs.getString('lastName');
@@ -57,20 +63,22 @@ class _AddCustomerState extends State<AddCustomer> {
   }
 
 
+  /// Saves the customer details to the database and optionally saves them for future use.
+  /// Shows a confirmation dialog to ask if the details should be saved for the next time.
   void _saveCustomer() async {
     if (_firstNameController.text.isEmpty ||
         _lastNameController.text.isEmpty ||
         _addressController.text.isEmpty ||
         _birthdayController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
+         SnackBar(content: Text(S.of(context).pleaseFillAllFields)),
       );
       return;
     }
 
     if (_dao == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Database not initialized')),
+         SnackBar(content: Text(S.of(context).databaseNotInitialized)),
       );
       return;
     }
@@ -85,7 +93,7 @@ class _AddCustomerState extends State<AddCustomer> {
     try {
       await _dao!.insertCustomer(customer);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Customer added')),
+         SnackBar(content: Text(S.of(context).customerAdded)),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -101,15 +109,15 @@ class _AddCustomerState extends State<AddCustomer> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Save Details'),
-          content: const Text('Do you want to save these details for next time?'),
+          title: Text(S.of(context).saveDetails),
+          content: Text(S.of(context).saveForNextTime),
           actions: <Widget>[
             TextButton(
-              child: const Text('No'),
+              child:  Text(S.of(context).no),
               onPressed: () => Navigator.pop(context, false),
             ),
             TextButton(
-              child: const Text('Yes'),
+              child:  Text(S.of(context).yes),
               onPressed: () => Navigator.pop(context, true),
             ),
           ],
@@ -127,7 +135,7 @@ class _AddCustomerState extends State<AddCustomer> {
       await _encryptedPrefs.setString('address', customer.address);
       await _encryptedPrefs.setString('birthday', customer.birthday);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Customer details saved for next time')),
+         SnackBar(content: Text(S.of(context).saveForNextTime)),
       );
     } else {
       // Clear saved customer details
@@ -144,7 +152,7 @@ class _AddCustomerState extends State<AddCustomer> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Add Customer'),
+          title:  Text(S.of(context).addCustomer),
         ),
         body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -152,19 +160,19 @@ class _AddCustomerState extends State<AddCustomer> {
           children: <Widget>[
           TextField(
           controller: _firstNameController,
-          decoration: const InputDecoration(labelText: 'First Name'),
+          decoration:  InputDecoration(labelText: S.of(context).firstName),
           ),
           TextField(
           controller: _lastNameController,
-          decoration: const InputDecoration(labelText: 'Last Name'),
+          decoration:  InputDecoration(labelText: S.of(context).lastName),
           ),
         TextField(
         controller : _addressController,
-        decoration : const InputDecoration(labelText: 'Address'),
+        decoration :  InputDecoration(labelText: S.of(context).address),
           ),
         TextField(
         controller : _birthdayController,
-        decoration : const InputDecoration(labelText: 'Birthday (YYYY-MM-DD)'),
+        decoration :  InputDecoration(labelText: S.of(context).birthday),
         ),
         ElevatedButton(
         onPressed: _saveCustomer,
