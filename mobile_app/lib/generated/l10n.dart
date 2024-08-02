@@ -60,6 +60,16 @@ class S {
     );
   }
 
+  /// `Customer Management`
+  String get customerManagement {
+    return Intl.message(
+      'Customer Management',
+      name: 'customerManagement',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Customers Page`
   String get customersPage {
     return Intl.message(
@@ -140,6 +150,96 @@ class S {
     );
   }
 
+  /// `No`
+  String get no {
+    return Intl.message(
+      'No',
+      name: 'no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First Name`
+  String get firstName {
+    return Intl.message(
+      'First Name',
+      name: 'firstName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Name`
+  String get lastName {
+    return Intl.message(
+      'Last Name',
+      name: 'lastName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address`
+  String get address {
+    return Intl.message(
+      'Address',
+      name: 'address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date of Birth (YYYY-MM-DD)`
+  String get birthday {
+    return Intl.message(
+      'Date of Birth (YYYY-MM-DD)',
+      name: 'birthday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please fill all the fields`
+  String get pleaseFillAllFields {
+    return Intl.message(
+      'Please fill all the fields',
+      name: 'pleaseFillAllFields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Database not Initialized`
+  String get databaseNotInitialized {
+    return Intl.message(
+      'Database not Initialized',
+      name: 'databaseNotInitialized',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer Details saved for the next time`
+  String get savedForNextTime {
+    return Intl.message(
+      'Customer Details saved for the next time',
+      name: 'savedForNextTime',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Are you sure you want to delete this?`
   String get confirmDeletion {
     return Intl.message(
@@ -150,21 +250,81 @@ class S {
     );
   }
 
-  /// `हिंदी में स्विच करें`
-  String get switchToHindi {
+  /// `Save Details`
+  String get saveDetails {
     return Intl.message(
-      'हिंदी में स्विच करें',
-      name: 'switchToHindi',
+      'Save Details',
+      name: 'saveDetails',
       desc: '',
       args: [],
     );
   }
 
-  /// `अंग्रेजी में स्विच करें`
-  String get switchToEnglish {
+  /// `Do you want to save for the next time?`
+  String get saveForNextTime {
     return Intl.message(
-      'अंग्रेजी में स्विच करें',
-      name: 'switchToEnglish',
+      'Do you want to save for the next time?',
+      name: 'saveForNextTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer Added`
+  String get customerAdded {
+    return Intl.message(
+      'Customer Added',
+      name: 'customerAdded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Customers Found`
+  String get noCustomerFound {
+    return Intl.message(
+      'No Customers Found',
+      name: 'noCustomerFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer Updated`
+  String get customerUpdated {
+    return Intl.message(
+      'Customer Updated',
+      name: 'customerUpdated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer Deleted`
+  String get customerDeleted {
+    return Intl.message(
+      'Customer Deleted',
+      name: 'customerDeleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Customer`
+  String get updateCustomer {
+    return Intl.message(
+      'Update Customer',
+      name: 'updateCustomer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Customer`
+  String get addCustomer {
+    return Intl.message(
+      'Add Customer',
+      name: 'addCustomer',
       desc: '',
       args: [],
     );

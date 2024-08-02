@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:floor/floor.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
+import '../generated/l10n.dart';
 import 'CustomerItem.dart';
 import 'CustomerDAO.dart';
 import 'CustomerDatabase.dart';
@@ -9,6 +10,12 @@ import 'AddCustomer.dart';
 import 'UpdateCustomer.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 
+/// A StatefulWidget that displays a list of customers and allows navigation to
+/// add or update customer details.
+///
+/// The [CustomersPage] widget initializes the database, loads customers from
+/// the database, and provides options to add a new customer or update existing
+/// customer details.
 class CustomersPage extends StatefulWidget {
   const CustomersPage({super.key});
 
@@ -28,6 +35,10 @@ class _CustomersPageState extends State<CustomersPage> {
     _initDatabase();
   }
 
+  /// Initializes the database and sets up the DAO for database operations.
+  ///
+  /// This method builds the customer database and assigns the DAO for CRUD operations.
+  /// It also loads the list of customers from the database.
   void _initDatabase() async {
     try {
       final database = await $FloorCustomerDatabase.databaseBuilder('customer_database.db').build();
@@ -39,6 +50,10 @@ class _CustomersPageState extends State<CustomersPage> {
     }
   }
 
+  /// Loads the list of customers from the database.
+  ///
+  /// This method updates the state to fetch the list of customers using the DAO
+  /// and triggers a rebuild of the widget.
   void _loadCustomers() {
     setState(() {
       _customers = _dao.findAllCustomers();
@@ -46,6 +61,10 @@ class _CustomersPageState extends State<CustomersPage> {
   }
 
 
+  /// Navigates to the [AddCustomer] screen.
+  ///
+  /// After returning from the [AddCustomer] screen, this method reloads the
+  /// customer list to reflect any new additions.
   void _navigateToAddCustomer() async {
     final result = await Navigator.push(
       context,
@@ -60,7 +79,7 @@ class _CustomersPageState extends State<CustomersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Customer Management'),
+        title:   Text(S.of(context).customerManagement),
       ),
       body: FutureBuilder<List<Customer>>(
         future: _customers,
@@ -74,7 +93,7 @@ class _CustomersPageState extends State<CustomersPage> {
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No customers found.'));
+            return  Center(child: Text(S.of(context).noCustomerFound));
           }
 
           return ListView.builder(
