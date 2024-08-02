@@ -4,10 +4,12 @@ import 'flights/FlightsPage.dart';
 import 'Customers/CustomersPage.dart';
 import 'generated/l10n.dart';
 
+/// main function to run the application
 void main() {
   runApp(const MyApp());
 }
 
+/// Main application widget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -35,15 +37,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// Homepage of the application
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
+  /// variable to hold the title of the homepage
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+/// State of the homepage
 class _MyHomePageState extends State<MyHomePage> {
 
   @override
@@ -55,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('CST2335 Final Project'),
       ),
       body: Center(
+        // Column to hold the 4 buttons for navigation
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -70,11 +76,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               child: Text(S.of(context).customersPage),
             ),
+            
+            // SizedBox is used to add space between the buttons
             SizedBox(height: 10),
+            
+            // Create an ElevatedButton for airplanes page,
             const ElevatedButton(onPressed: null, child: Text("Airplanes Page"),
             ),
+
+            // SizedBox is used to add space between the buttons
             SizedBox(height: 10),
 
+            // Create an ElevatedButton for Flights page,
              ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -86,7 +99,11 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Text("Flights Page"),
             ),
+
+             // SizedBox is used to add space between the buttons
             SizedBox(height: 10),
+
+            // Create an ElevatedButton for reservations page,
             const ElevatedButton(onPressed: null, child: Text("Reservations Page"),
             ),
           ],
