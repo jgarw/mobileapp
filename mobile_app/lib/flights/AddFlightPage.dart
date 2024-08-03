@@ -1,4 +1,5 @@
 
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/flights/FlightDAO.dart';
 import 'package:mobile_app/flights/FlightItem.dart';
@@ -21,6 +22,8 @@ class AddFlightPage extends StatefulWidget {
 
 /// State of the AddFlightPage
 class _AddFlightPageState extends State<AddFlightPage> {
+
+  final EncryptedSharedPreferences _prefs = EncryptedSharedPreferences();
 
   /// Text editing controller for departure city that will be set when user types in the textfield
   late TextEditingController _departureCityController;
@@ -56,7 +59,14 @@ class _AddFlightPageState extends State<AddFlightPage> {
   }
 
   /// method to add an item to the list when the user presses the button
-  void _addItem() {
+  void _addItem() async {
+
+     // Save new flight data to EncryptedSharedPreferences
+    await _prefs.setString('departureCity', _departureCityController.text);
+    await _prefs.setString('arrivalCity', _arrivalCityController.text);
+    await _prefs.setString('departureTime', _departureTimeController.text);
+    await _prefs.setString('arrivalTime', _arrivalTimeController.text);
+
     /// create a new FlightItem with the text from the textfields
     var newItem = FlightItem(
         FlightItem.ID + 1,

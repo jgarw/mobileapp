@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_app/flights/AddFlightPage.dart';
 import 'package:mobile_app/flights/FlightsDatabase.dart';
@@ -37,10 +38,13 @@ class FlightsPage extends StatefulWidget {
 
   @override
   State<FlightsPage> createState() => _FlightsPage();
+
+  
 }
 
 /// State of the Flights page
 class _FlightsPage extends State<FlightsPage> {
+
 
   /// list of Flight items
   final List<FlightItem> _items = [];
