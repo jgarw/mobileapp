@@ -33,11 +33,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   provider: ^6.1.2
-<<<<<<< HEAD
   intl: ^0.19.0
-=======
-  intl: ^0.18.0
->>>>>>> fa74a20 (Added reservation page.)
   path: ^1.8.0
   shared_preferences: ^2.0.15
   flutter_secure_storage: ^5.0.2
