@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_app/flights/AddFlightPage.dart';
 import 'package:mobile_app/flights/FlightsDatabase.dart';
 import 'package:mobile_app/flights/UpdateFlightPage.dart';
+import 'package:mobile_app/main.dart';
 import 'FlightDAO.dart';
 import 'FlightsDatabase.dart';
 import 'package:flutter/material.dart';
@@ -36,10 +38,13 @@ class FlightsPage extends StatefulWidget {
 
   @override
   State<FlightsPage> createState() => _FlightsPage();
+
+  
 }
 
 /// State of the Flights page
 class _FlightsPage extends State<FlightsPage> {
+
 
   /// list of Flight items
   final List<FlightItem> _items = [];
@@ -79,6 +84,47 @@ class _FlightsPage extends State<FlightsPage> {
       });
     });
   }
+
+  /// Method to show a snackbar when an item is deleted
+  void _deletedSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Flight Deleted'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  /// Method to confirm the deletion of an item with al AlertDialog
+  /// @param item the item to be deleted
+  void _confirmDelete(FlightItem item) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Flight'),
+          content: Text('Are you sure you want to delete this flight?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _deleteItem(_selectedItem!);
+                Navigator.of(context).pop();
+                _deletedSnackBar();
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   /// Dispose the state of the widget 
   @override
@@ -225,7 +271,7 @@ class _FlightsPage extends State<FlightsPage> {
               // add a delete button to delete the selected item
               ElevatedButton(
                 // when pressed, the selected item will be deleted using the deleteItem method
-                onPressed: () => _deleteItem(item),
+                onPressed: () => _confirmDelete(item),
                 child: Text('Delete'),
               ),
               SizedBox(width: 20),
@@ -250,6 +296,28 @@ class _FlightsPage extends State<FlightsPage> {
           ),
         ),
       ],
+    );
+  }
+
+  /// Method to show the user instructions in an AlertDialog when the Instructions button is pressed
+  /// @return an AlertDialog with the instructions for the user
+  void _showInstructions(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Instructions'),
+          content: Text('Welcome to the flight management app!\n\nTo add a new flight, click the + button in the bottom right corner. \n\nTo view the details of a flight, click on the flight in the list. \n\nTo update or delete a flight, click the Update or Delete button on the details page. \n\nTo exit the app, click the Exit button in the app bar.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -281,6 +349,38 @@ class _FlightsPage extends State<FlightsPage> {
           ),
         ],
       ),
+
+      /// add a drawer to the app bar with a list of items including user instructions
+      drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                child: Text('Flight List', style: TextStyle(fontSize: 24, color: Colors.white)),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 183, 62, 204),
+                ),
+              ),
+              ListTile(
+                title: Text('Home'),
+                onTap: () {
+                  Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) => const MyHomePage(title: 'CST2335 Final Project'),
+                ),
+                );
+                },
+              ),
+              ListTile(
+                title: Text('Instructions'),
+                onTap: () {
+                  _showInstructions();
+                }
+              )
+            ],
+          ),
+        ),
       body: Center(
         // check if width is greater than height and width is greater than 720 to determine if the screen is a tablet.
         // if it is a tablet, call the _tabletView method, otherwise call the _mobileView method
