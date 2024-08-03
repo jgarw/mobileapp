@@ -20,12 +20,7 @@ void main() {
   );
 }
 
-<<<<<<< HEAD
-
-
-=======
 /// Main application widget
->>>>>>> f347872506c95370f542f7b71d6457062ffd94a9
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -35,6 +30,7 @@ class MyApp extends StatelessWidget {
       builder: (context, localeProvider, child) {
         return MaterialApp(
           title: 'CST2335 Final Project',
+          debugShowCheckedModeBanner: false,
           locale: localeProvider.locale,
           localizationsDelegates: [
             S.delegate,
@@ -82,12 +78,9 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-<<<<<<< HEAD
 */
-=======
 
 /// Homepage of the application
->>>>>>> f347872506c95370f542f7b71d6457062ffd94a9
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -101,18 +94,11 @@ class MyHomePage extends StatefulWidget {
 /// State of the homepage
 class _MyHomePageState extends State<MyHomePage> {
 
- /* @override
-  Widget build(BuildContext context) {
-    
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('CST2335 Final Project'),
-      ),*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: <Widget>[
