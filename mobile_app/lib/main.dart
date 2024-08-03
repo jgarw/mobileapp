@@ -5,6 +5,7 @@ import 'flights/FlightsPage.dart';
 import 'Customers/CustomersPage.dart';
 import 'generated/l10n.dart';
 import 'LocaleProvider.dart';
+import 'Reservations/ReservationPage.dart';
 /*void main() {
   runApp(const MyApp());
 }*/
@@ -20,7 +21,12 @@ void main() {
   );
 }
 
+
+
+
+
 /// Main application widget
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -80,7 +86,9 @@ class MyApp extends StatelessWidget {
 }
 */
 
+
 /// Homepage of the application
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -158,9 +166,21 @@ class _MyHomePageState extends State<MyHomePage> {
              // SizedBox is used to add space between the buttons
             SizedBox(height: 10),
 
-            // Create an ElevatedButton for reservations page,
-            const ElevatedButton(onPressed: null, child: Text("Reservations Page"),
+            // Create an ElevatedButton for Reservation page,
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReservationPage(title: 'Reservations'),
+                  ),
+                );
+              },
+              child: Text("Reservations Page"),
             ),
+
+            // SizedBox is used to add space between the buttons
+            SizedBox(height: 10),
           ],
         ),
       ),
