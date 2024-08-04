@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'flights/FlightsPage.dart';
+import 'flights/FlightsPage.dart';
 import 'Customers/CustomersPage.dart';
 import 'generated/l10n.dart';
 import 'LocaleProvider.dart';
@@ -9,7 +10,6 @@ import 'Reservations/ReservationPage.dart';
 /*void main() {
   runApp(const MyApp());
 }*/
-
 
 import 'airplanes/AirplanesPage.dart';
 
@@ -22,10 +22,6 @@ void main() {
     ),
   );
 }
-
-
-
-
 
 /// Main application widget
 
@@ -47,7 +43,6 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: const [
-
             Locale('hi', ''), // Hindi
             Locale('en', ''), // English
           ],
@@ -62,9 +57,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 // This widget is the root of your application.
- /* @override
+/* @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CST2335 Final Project',
@@ -86,8 +80,9 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-*/
 
+/// Homepage of the application
+*/
 
 /// Homepage of the application
 
@@ -103,19 +98,18 @@ class MyHomePage extends StatefulWidget {
 
 /// State of the homepage
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.language),
             onPressed: () {
-              final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+              final localeProvider =
+                  Provider.of<LocaleProvider>(context, listen: false);
               final newLocale = localeProvider.locale.languageCode == 'en'
                   ? const Locale('hi', '')
                   : const Locale('en', '');
@@ -133,47 +127,50 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
-                context,
-                MaterialPageRoute(
-                builder: (context) => CustomersPage(),
-                ),
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CustomersPage(),
+                  ),
                 );
-                },
+              },
               child: Text(S.of(context).customersPage),
             ),
-            
+
             // SizedBox is used to add space between the buttons
             SizedBox(height: 10),
-            
+
             // Create an ElevatedButton for airplanes page,
             ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AirplanesPage(title: 'Airplanes'),
-                    ),
-                  );
-                }, child: Text("Airplanes Page"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AirplanesPage(title: 'Airplanes'),
+                  ),
+                );
+              },
+              child: Text("Airplanes Page"),
             ),
 
             // SizedBox is used to add space between the buttons
             SizedBox(height: 10),
 
             // Create an ElevatedButton for Flights page,
-             ElevatedButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => FlightsPage(title: 'Flights',),
+                    builder: (context) => FlightsPage(
+                      title: 'Flights',
+                    ),
                   ),
                 );
               },
               child: Text("Flights Page"),
             ),
 
-             // SizedBox is used to add space between the buttons
+            // SizedBox is used to add space between the buttons
             SizedBox(height: 10),
 
             // Create an ElevatedButton for Reservation page,
@@ -182,7 +179,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ReservationPage(title: 'Reservations'),
+                    builder: (context) =>
+                        ReservationPage(title: 'Reservations'),
                   ),
                 );
               },
