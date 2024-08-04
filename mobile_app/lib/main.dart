@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'flights/FlightsPage.dart'; 
+import 'flights/FlightsPage.dart';
 import 'Customers/CustomersPage.dart';
 import 'generated/l10n.dart';
 import 'LocaleProvider.dart';
@@ -11,6 +11,7 @@ import 'Reservations/ReservationPage.dart';
 }*/
 
 
+import 'airplanes/AirplanesPage.dart';
 
 /// main function to run the application
 void main() {
@@ -145,7 +146,15 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 10),
             
             // Create an ElevatedButton for airplanes page,
-            const ElevatedButton(onPressed: null, child: Text("Airplanes Page"),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AirplanesPage(title: 'Airplanes'),
+                    ),
+                  );
+                }, child: Text("Airplanes Page"),
             ),
 
             // SizedBox is used to add space between the buttons
