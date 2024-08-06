@@ -1,4 +1,3 @@
-
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/flights/FlightDAO.dart';
@@ -6,7 +5,6 @@ import 'package:mobile_app/flights/FlightItem.dart';
 
 /// create a second page that will hold textfields for user to enter flight data to add an item to the list
 class AddFlightPage extends StatefulWidget {
-
   /// Flight DAO that will be used to interact with the database
   final FlightDAO myDAO;
 
@@ -22,7 +20,6 @@ class AddFlightPage extends StatefulWidget {
 
 /// State of the AddFlightPage
 class _AddFlightPageState extends State<AddFlightPage> {
-
   final EncryptedSharedPreferences _prefs = EncryptedSharedPreferences();
 
   /// Text editing controller for departure city that will be set when user types in the textfield
@@ -58,14 +55,56 @@ class _AddFlightPageState extends State<AddFlightPage> {
     super.dispose();
   }
 
+  void _invalidFieldAlert(String field) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Invalid Field"),
+          content: Text("Please enter a valid $field"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   /// method to add an item to the list when the user presses the button
   void _addItem() async {
+    // Save new flight data to EncryptedSharedPreferences
+    if (_departureCityController.text.isEmpty) {
+      _invalidFieldAlert("Please enter a departure city");
+      return;
+    } else {
+      await _prefs.setString('departureCity', _departureCityController.text);
+    }
 
-     // Save new flight data to EncryptedSharedPreferences
-    await _prefs.setString('departureCity', _departureCityController.text);
-    await _prefs.setString('arrivalCity', _arrivalCityController.text);
-    await _prefs.setString('departureTime', _departureTimeController.text);
-    await _prefs.setString('arrivalTime', _arrivalTimeController.text);
+    if (_arrivalCityController.text.isEmpty) {
+      _invalidFieldAlert("Please enter an arrival city");
+      return;
+    } else {
+      await _prefs.setString('arrivalCity', _departureCityController.text);
+    }
+
+    if (_departureTimeController.text.isEmpty) {
+      _invalidFieldAlert("Please enter a departure time");
+      return;
+    } else {
+      await _prefs.setString('departureTime', _departureCityController.text);
+    }
+
+    if (_arrivalTimeController.text.isEmpty) {
+      _invalidFieldAlert("Please enter an arrival time");
+      return;
+    } else {
+      await _prefs.setString('arrivalTime', _departureCityController.text);
+    }
 
     /// create a new FlightItem with the text from the textfields
     var newItem = FlightItem(
@@ -74,6 +113,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
         _arrivalCityController.text,
         _departureTimeController.text,
         _arrivalTimeController.text);
+
     /// insert the item into the database and call the onAdd function
     widget.myDAO.insertItem(newItem).then((_) {
       widget.onAdd();
@@ -105,7 +145,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
             // add space between the textfields
             SizedBox(height: 8),
 
-             // create a textfield for the user to enter the arrival city of the flight
+            // create a textfield for the user to enter the arrival city of the flight
             TextField(
               controller: _arrivalCityController,
               decoration: InputDecoration(
@@ -118,7 +158,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
             // add space between the textfields
             SizedBox(height: 8),
 
-             // create a textfield for the user to enter the departure time of the flight
+            // create a textfield for the user to enter the departure time of the flight
             TextField(
               controller: _departureTimeController,
               decoration: InputDecoration(
@@ -131,7 +171,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
             // add space between the textfields
             SizedBox(height: 8),
 
-             // create a textfield for the user to enter the arrival time of the flight
+            // create a textfield for the user to enter the arrival time of the flight
             TextField(
               controller: _arrivalTimeController,
               decoration: InputDecoration(

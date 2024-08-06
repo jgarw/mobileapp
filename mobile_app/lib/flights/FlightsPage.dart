@@ -33,19 +33,15 @@ class MyApp extends StatelessWidget {
 class FlightsPage extends StatefulWidget {
   const FlightsPage({super.key, required this.title});
 
-/// variable to hold the title of the Flights page
+  /// variable to hold the title of the Flights page
   final String title;
 
   @override
   State<FlightsPage> createState() => _FlightsPage();
-
-  
 }
 
 /// State of the Flights page
 class _FlightsPage extends State<FlightsPage> {
-
-
   /// list of Flight items
   final List<FlightItem> _items = [];
 
@@ -55,7 +51,7 @@ class _FlightsPage extends State<FlightsPage> {
   /// selected flight item from the list (will be set later when an item is selected)
   FlightItem? _selectedItem;
 
-/// Initialize the state of the widget and get the database instance
+  /// Initialize the state of the widget and get the database instance
   @override
   void initState() {
     super.initState();
@@ -125,8 +121,7 @@ class _FlightsPage extends State<FlightsPage> {
     );
   }
 
-
-  /// Dispose the state of the widget 
+  /// Dispose the state of the widget
   @override
   void dispose() {
     super.dispose();
@@ -182,58 +177,53 @@ class _FlightsPage extends State<FlightsPage> {
   /// Method to build the list of items
   /// @return the list view with the list of items
   Widget _itemList() {
-    
-    // create a list view with builder pattern to display the list of items 
+    // create a list view with builder pattern to display the list of items
     return ListView.builder(
       itemCount: _items.length,
       itemBuilder: (context, index) {
         // return a ListTile for each item in the list
-         return ListTile(
-        title: RichText(
-          text: TextSpan(
-            children: [
-              // add the departure city with the value from the item
-              TextSpan(
-                text: "Departure: ${_items[index].departureCity} ",
-                style: TextStyle(fontSize: 20, color: Colors.black)
-              ),
+        return ListTile(
+          title: RichText(
+            text: TextSpan(
+              children: [
+                // add the departure city with the value from the item
+                TextSpan(
+                    text: "Departure: ${_items[index].departureCity} ",
+                    style: TextStyle(fontSize: 20, color: Colors.black)),
 
-              // add an airplane taking off icon between the departure and destination cities
-              WidgetSpan(
-                child: Icon(Icons.flight_takeoff, size: 20),
-              ),
+                // add an airplane taking off icon between the departure and destination cities
+                WidgetSpan(
+                  child: Icon(Icons.flight_takeoff, size: 20),
+                ),
 
-              // add the destination city with the value from the item
-              TextSpan(
-                text: " Arrival: ${_items[index].destinationCity}\n",
-               style: TextStyle(fontSize: 20, color: Colors.black)
-              ),
+                // add the destination city with the value from the item
+                TextSpan(
+                    text: " Arrival: ${_items[index].destinationCity}\n",
+                    style: TextStyle(fontSize: 20, color: Colors.black)),
 
-              // add the departure time with the value from the item
-              TextSpan(
-                text: "Departure Time: ${_items[index].departureTime}",
-                style: TextStyle(fontSize: 20, color: Colors.black)
-              ),
+                // add the departure time with the value from the item
+                TextSpan(
+                    text: "Departure Time: ${_items[index].departureTime}",
+                    style: TextStyle(fontSize: 20, color: Colors.black)),
 
-              // add an arrow icon between the departure and arrival times
-              WidgetSpan(
-                child: Icon(Icons.arrow_right_alt, size: 20),
-              ),
+                // add an arrow icon between the departure and arrival times
+                WidgetSpan(
+                  child: Icon(Icons.arrow_right_alt, size: 20),
+                ),
 
-              // add the arrival time with the value from the item
-              TextSpan(
-                text: "Arrival Time: ${_items[index].arrivalTime}",
-                style: TextStyle(fontSize: 20, color: Colors.black)
-              ),
-            ],
+                // add the arrival time with the value from the item
+                TextSpan(
+                    text: "Arrival Time: ${_items[index].arrivalTime}",
+                    style: TextStyle(fontSize: 20, color: Colors.black)),
+              ],
+            ),
           ),
-        ),
 
-        // set the onTap event to call the _onItemTapped method with the selected item
-        onTap: () => _onItemTapped(_items[index]),
-      );
-    },
-  );
+          // set the onTap event to call the _onItemTapped method with the selected item
+          onTap: () => _onItemTapped(_items[index]),
+        );
+      },
+    );
   }
 
   /// Method to build the details page for the selected item
@@ -257,14 +247,13 @@ class _FlightsPage extends State<FlightsPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               // add a cancel button to clear the selected item
               ElevatedButton(
-                // when pressed, the selected item will be set to null
+                  // when pressed, the selected item will be set to null
                   onPressed: () => setState(() {
                         _selectedItem = null;
                       }),
-                      // set the text of the button to Cancel
+                  // set the text of the button to Cancel
                   child: Text('Cancel')),
               SizedBox(width: 20),
 
@@ -278,17 +267,20 @@ class _FlightsPage extends State<FlightsPage> {
 
               // add an update button to update the selected item
               ElevatedButton(
-
                 // when pressed, the UpdateFlightPage will be opened with the selected item details to update
                 onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                // pass the selected item to the UpdateFlightPage
-                    UpdateFlightPage(myDAO: myDAO, onUpdate: _refreshItems, flight: item,)),
-          );
-        },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            // pass the selected item to the UpdateFlightPage
+                            UpdateFlightPage(
+                              myDAO: myDAO,
+                              onUpdate: _refreshItems,
+                              flight: item,
+                            )),
+                  );
+                },
                 // set the text of the button to Update
                 child: Text('Update'),
               ),
@@ -301,13 +293,14 @@ class _FlightsPage extends State<FlightsPage> {
 
   /// Method to show the user instructions in an AlertDialog when the Instructions button is pressed
   /// @return an AlertDialog with the instructions for the user
-  void _showInstructions(){
+  void _showInstructions() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Instructions'),
-          content: Text('Welcome to the flight management app!\n\nTo add a new flight, click the + button in the bottom right corner. \n\nTo view the details of a flight, click on the flight in the list. \n\nTo update or delete a flight, click the Update or Delete button on the details page. \n\nTo exit the app, click the Exit button in the app bar.'),
+          content: Text(
+              'Welcome to the flight management app!\n\nTo add a new flight, click the + button in the bottom right corner. \n\nTo view the details of a flight, click on the flight in the list. \n\nTo update or delete a flight, click the Update or Delete button on the details page. \n\nTo exit the app, click the Exit button in the app bar.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -325,11 +318,10 @@ class _FlightsPage extends State<FlightsPage> {
   /// @return the widget with the list of items and the selected item details
   @override
   Widget build(BuildContext context) {
-
     /// get the size of the screen
     var size = MediaQuery.of(context).size;
 
-    /// get the width of the screen from size 
+    /// get the width of the screen from size
     var width = size.width;
 
     /// get the height of the screen from size
@@ -352,35 +344,36 @@ class _FlightsPage extends State<FlightsPage> {
 
       /// add a drawer to the app bar with a list of items including user instructions
       drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                child: Text('Flight List', style: TextStyle(fontSize: 24, color: Colors.white)),
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 183, 62, 204),
-                ),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              child: Text('Flight List',
+                  style: TextStyle(fontSize: 24, color: Colors.white)),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 183, 62, 204),
               ),
-              ListTile(
-                title: Text('Home'),
-                onTap: () {
-                  Navigator.push(
-                context,
-                MaterialPageRoute(
-                builder: (context) => const MyHomePage(title: 'CST2335 Final Project'),
-                ),
+            ),
+            ListTile(
+              title: Text('Home'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const MyHomePage(title: 'CST2335 Final Project'),
+                  ),
                 );
-                },
-              ),
-              ListTile(
+              },
+            ),
+            ListTile(
                 title: Text('Instructions'),
                 onTap: () {
                   _showInstructions();
-                }
-              )
-            ],
-          ),
+                })
+          ],
         ),
+      ),
       body: Center(
         // check if width is greater than height and width is greater than 720 to determine if the screen is a tablet.
         // if it is a tablet, call the _tabletView method, otherwise call the _mobileView method
@@ -403,4 +396,3 @@ class _FlightsPage extends State<FlightsPage> {
     );
   }
 }
-
