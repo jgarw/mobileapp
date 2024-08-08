@@ -89,21 +89,21 @@ class _AddFlightPageState extends State<AddFlightPage> {
       _invalidFieldAlert("Please enter an arrival city");
       return;
     } else {
-      await _prefs.setString('arrivalCity', _departureCityController.text);
+      await _prefs.setString('arrivalCity', _arrivalCityController.text);
     }
 
     if (_departureTimeController.text.isEmpty) {
       _invalidFieldAlert("Please enter a departure time");
       return;
     } else {
-      await _prefs.setString('departureTime', _departureCityController.text);
+      await _prefs.setString('departureTime', _departureTimeController.text);
     }
 
     if (_arrivalTimeController.text.isEmpty) {
       _invalidFieldAlert("Please enter an arrival time");
       return;
     } else {
-      await _prefs.setString('arrivalTime', _departureCityController.text);
+      await _prefs.setString('arrivalTime', _arrivalTimeController.text);
     }
 
     /// create a new FlightItem with the text from the textfields
