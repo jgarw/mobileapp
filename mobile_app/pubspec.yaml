@@ -46,7 +46,7 @@ dependencies:
   floor_generator: ^1.4.0
   encrypted_shared_preferences: ^3.0.1
 
-  sqflite: any
+  sqflite: ^2.0.0+4
 dev_dependencies:
   mockito: ^5.4.4
   intl_utils: ^2.8.0

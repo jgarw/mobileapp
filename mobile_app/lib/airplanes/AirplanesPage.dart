@@ -52,7 +52,10 @@ class _AirplanesPageState extends State<AirplanesPage> {
     loadAirplaneData();
 
     // Initialize the database and load airplanes
-    $FloorAppDatabase.databaseBuilder('app_database.db').build().then((db) {
+    $FloorAppDatabase
+        .databaseBuilder('airplane_database.db')
+        .build()
+        .then((db) {
       database = db;
       airplaneDAO = database.airplaneDAO;
       _loadAirplanes();
@@ -83,18 +86,16 @@ class _AirplanesPageState extends State<AirplanesPage> {
       final speed = double.tryParse(speedController.text.trim());
       final range = double.tryParse(rangeController.text.trim());
 
-      if (type.isEmpty || passengers == null || speed == null || range == null) {
+      if (type.isEmpty ||
+          passengers == null ||
+          speed == null ||
+          range == null) {
         throw FormatException('Invalid input');
       }
 
       // Create a new AirplaneItem
-      final newAirplane = AirplaneItem(
-          AirplaneItem.ID++,
-          type,
-          passengers,
-          speed,
-          range
-      );
+      final newAirplane =
+          AirplaneItem(AirplaneItem.ID++, type, passengers, speed, range);
 
       // Insert the new airplane into the database
       airplaneDAO.insertItem(newAirplane).then((_) {
@@ -113,7 +114,9 @@ class _AirplanesPageState extends State<AirplanesPage> {
     } catch (e) {
       print('Error in addAirplane: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid input. Please check your data and try again.')),
+        SnackBar(
+            content:
+                Text('Invalid input. Please check your data and try again.')),
       );
     }
   }
@@ -126,13 +129,8 @@ class _AirplanesPageState extends State<AirplanesPage> {
     final speed = double.tryParse(speedController.text.trim());
     final range = double.tryParse(rangeController.text.trim());
 
-    final updatedAirplane = AirplaneItem(
-        airplane.id,
-        type,
-        passengers!,
-        speed!,
-        range!
-    );
+    final updatedAirplane =
+        AirplaneItem(airplane.id, type, passengers!, speed!, range!);
 
     airplaneDAO.updateItem(updatedAirplane).then((_) {
       // Refresh the list of airplanes
@@ -199,16 +197,21 @@ class _AirplanesPageState extends State<AirplanesPage> {
 
   void saveAirplaneData() async {
     await encryptedSharedPreferences.setString('type', typeController.text);
-    await encryptedSharedPreferences.setString('passengers', passengersController.text);
+    await encryptedSharedPreferences.setString(
+        'passengers', passengersController.text);
     await encryptedSharedPreferences.setString('speed', speedController.text);
     await encryptedSharedPreferences.setString('range', rangeController.text);
   }
 
   void loadAirplaneData() async {
-    typeController.text = await encryptedSharedPreferences.getString('type') ?? '';
-    passengersController.text = await encryptedSharedPreferences.getString('passengers') ?? '';
-    speedController.text = await encryptedSharedPreferences.getString('speed') ?? '';
-    rangeController.text = await encryptedSharedPreferences.getString('range') ?? '';
+    typeController.text =
+        await encryptedSharedPreferences.getString('type') ?? '';
+    passengersController.text =
+        await encryptedSharedPreferences.getString('passengers') ?? '';
+    speedController.text =
+        await encryptedSharedPreferences.getString('speed') ?? '';
+    rangeController.text =
+        await encryptedSharedPreferences.getString('range') ?? '';
   }
 
   void showInstructions() {
@@ -219,13 +222,12 @@ class _AirplanesPageState extends State<AirplanesPage> {
           title: const Text('Instructions'),
           content: const Text(
               '1. Use the text fields to input the attributes of the airplane.\n'
-                  '2. Click "Add Airplane" to add it to the list.\n'
-                  '3. Tap on an airplane to view its type, amount of passengers, max speed, and range.\n'
-                  '4. Use the "Update" button to modify an airplane\'s details.\n'
-                  '5. Use the "Delete" button to remove an airplane from the list.\n'
-                  '6. The airplane details page works both in Portrait and Landscape mode.\n'
-                  '7. The instructions can be accessed from the ActionBar icon.'
-          ),
+              '2. Click "Add Airplane" to add it to the list.\n'
+              '3. Tap on an airplane to view its type, amount of passengers, max speed, and range.\n'
+              '4. Use the "Update" button to modify an airplane\'s details.\n'
+              '5. Use the "Delete" button to remove an airplane from the list.\n'
+              '6. The airplane details page works both in Portrait and Landscape mode.\n'
+              '7. The instructions can be accessed from the ActionBar icon.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -242,7 +244,8 @@ class _AirplanesPageState extends State<AirplanesPage> {
   @override
   Widget build(BuildContext context) {
     bool isTablet = MediaQuery.of(context).size.shortestSide >= 600;
-    bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Scaffold(
       appBar: AppBar(
@@ -251,12 +254,16 @@ class _AirplanesPageState extends State<AirplanesPage> {
         flexibleSpace: Align(
           alignment: Alignment.center,
           child: Row(
-            mainAxisSize: MainAxisSize.min, // Prevents Row from taking up more space than necessary
+            mainAxisSize: MainAxisSize
+                .min, // Prevents Row from taking up more space than necessary
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Instructions:',
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.white),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(color: Colors.white),
               ),
               SizedBox(width: 8), // Space between text and icon
               IconButton(
@@ -267,10 +274,11 @@ class _AirplanesPageState extends State<AirplanesPage> {
           ),
         ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: isTablet ? buildTabletLayout(isPortrait) : buildPhoneLayout(isPortrait),
+        child: isTablet
+            ? buildTabletLayout(isPortrait)
+            : buildPhoneLayout(isPortrait),
       ),
     );
   }
@@ -303,7 +311,8 @@ class _AirplanesPageState extends State<AirplanesPage> {
                     child: TextField(
                       decoration: InputDecoration(labelText: 'Max Speed'),
                       controller: speedController,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
                     ),
                   ),
                   SizedBox(width: 10),
@@ -311,7 +320,8 @@ class _AirplanesPageState extends State<AirplanesPage> {
                     child: TextField(
                       decoration: InputDecoration(labelText: 'Range'),
                       controller: rangeController,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
                     ),
                   ),
                   SizedBox(width: 10),
@@ -328,27 +338,27 @@ class _AirplanesPageState extends State<AirplanesPage> {
                 child: airplanes.isEmpty
                     ? Center(child: Text('No airplanes available'))
                     : ListView.builder(
-                  itemCount: airplanes.length,
-                  itemBuilder: (context, index) {
-                    final airplane = airplanes[index];
-                    return ListTile(
-                      title: Text(airplane.type),
-                      onTap: () {
-                        setState(() {
-                          selectedAirplane = airplane;
-                        });
-                      },
-                    );
-                  },
-                ),
+                        itemCount: airplanes.length,
+                        itemBuilder: (context, index) {
+                          final airplane = airplanes[index];
+                          return ListTile(
+                            title: Text(airplane.type),
+                            onTap: () {
+                              setState(() {
+                                selectedAirplane = airplane;
+                              });
+                            },
+                          );
+                        },
+                      ),
               ),
             ],
           ),
         ),
         selectedAirplane != null
             ? Expanded(
-          child: buildDetailsPage(),
-        )
+                child: buildDetailsPage(),
+              )
             : Container(),
       ],
     );
@@ -357,70 +367,72 @@ class _AirplanesPageState extends State<AirplanesPage> {
   Widget buildPhoneLayout(bool isPortrait) {
     return selectedAirplane == null
         ? Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(labelText: 'Type'),
-                controller: typeController,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Type'),
+                      controller: typeController,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Passengers'),
+                      controller: passengersController,
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Max Speed'),
+                      controller: speedController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Range'),
+                      controller: rangeController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      addAirplane();
+                      saveAirplaneData();
+                    },
+                    child: Text("Add Airplane"),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(labelText: 'Passengers'),
-                controller: passengersController,
-                keyboardType: TextInputType.number,
+              Expanded(
+                child: airplanes.isEmpty
+                    ? Center(child: Text('No airplanes available'))
+                    : ListView.builder(
+                        itemCount: airplanes.length,
+                        itemBuilder: (context, index) {
+                          final airplane = airplanes[index];
+                          return ListTile(
+                            title: Text(airplane.type),
+                            onTap: () {
+                              setState(() {
+                                selectedAirplane = airplane;
+                              });
+                            },
+                          );
+                        },
+                      ),
               ),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(labelText: 'Max Speed'),
-                controller: speedController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-              ),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(labelText: 'Range'),
-                controller: rangeController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-              ),
-            ),
-            SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: () {
-                addAirplane();
-                saveAirplaneData();
-              },
-              child: Text("Add Airplane"),
-            ),
-          ],
-        ),
-        Expanded(
-          child: airplanes.isEmpty
-              ? Center(child: Text('No airplanes available'))
-              : ListView.builder(
-            itemCount: airplanes.length,
-            itemBuilder: (context, index) {
-              final airplane = airplanes[index];
-              return ListTile(
-                title: Text(airplane.type),
-                onTap: () {
-                  setState(() {
-                    selectedAirplane = airplane;
-                  });
-                },
-              );
-            },
-          ),
-        ),
-      ],
-    )
+            ],
+          )
         : buildDetailsPage(isPortrait);
   }
 

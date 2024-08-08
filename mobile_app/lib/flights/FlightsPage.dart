@@ -57,7 +57,7 @@ class _FlightsPage extends State<FlightsPage> {
     super.initState();
 
     $FloorFlightsDatabase
-        .databaseBuilder('app_database.db')
+        .databaseBuilder('flight_database.db')
         .build()
         .then((database) {
       myDAO = database.flightDAO;
